@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context:beans xmlns:context="http://www.springframework.org/schema/beans"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 配置整合Mybatis-->
+    <!--
+        配置数据库相关参数,写在属性配置文件中而不是硬编码到代码中
+        context:property-placeholder标签的作用是告诉容器去
+        哪里寻找该配置文件并把它里面的属性值包含进来
+    -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+</context:beans>

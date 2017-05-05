@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.eakon.com.seckill.dao.SuccessKilledDao">
+    <!--目的：为DAO接口方法提供sql语句配置-->
+    <insert id="insertSuccessKilled">
+      <!--主键冲突会报错,加上IGNORE之后不会报错，而是返回数字0-->
+        INSERT IGNORE INTO success_killed(seckill_id, user_phone)
+        VALUES (#{seckillId},#{userPhone});
+    </insert>
+
+    <select id="queryByIdWithSeckill" resultType="SuccessKilled">
+        <!--根据id查询SuccessKilled并同时携带Seckill实体-->
+        <!--关键在于如何让Mybatis知道将结果映射到SuccessKilled同时映射对应的seckillInventory属性-->
+        <!--Mybatis最核心的一个点在于可以自由控制SQL-->
+        SELECT
+             sk.seckill_id,
+             sk.user_phone,
+             sk.create_time,
+             sk.state,
+             s.seckill_id "seckillInventory.seckill_id",
+             s.name "seckillInventory.name",
+             s.number "seckillInventory.number",
+             s.start_time "seckillInventory.start_time",
+             s.end_time "seckillInventory.end_time",
+             s.create_time "seckillInventory.create_time"
+        FROM success_killed sk
+        INNER JOIN seckillinventory s ON sk.seckill_id = s.seckill_id
+        WHERE sk.seckill_id=#{seckillId};
+    </select>
+</mapper>

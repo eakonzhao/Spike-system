@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.eakon.com.seckill.dao.SeckillInventoryDao">
+    <!--目的：为DAO接口方法提供sql语句配置-->
+    <update id="reduceSeckillInventoryMount">
+        <!--具体的sql语句-->
+        UPDATE
+          seckillInventory
+        SET
+          number = number -1
+        WHERE seckill_id = #{seckillId}
+        AND start_time <![CDATA[ <= ]]> #{killTime}
+        AND end_time <![CDATA[ >= ]]> #{killTime}
+        AND number >0;
+    </update>
+
+    <select id="queryById" resultType="SeckillInventory" parameterType="long">
+        SELECT seckill_id, name, number, start_time, end_time, create_time
+        FROM seckillInventory
+        WHERE seckill_id=#{seckill_id};
+    </select>
+
+    <select id="queryAll" resultType="SeckillInventory">
+        SELECT seckill_id, name, number, start_time, end_time, create_time
+        FROM seckillInventory
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit};
+    </select>
+</mapper>

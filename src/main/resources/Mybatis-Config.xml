@@ -10,8 +10,8 @@
         <!--使用列别名替换列名 默认true
             select name as title from table;
         -->
-        <setting name="userColumnLabel" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
         <!--开启驼峰命名转换:Table(create_time)->Entity(createTime)-->
-        <setting name="mapUnderscoreCamelCase" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 </configuration>

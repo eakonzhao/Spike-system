@@ -24,13 +24,6 @@ public class SuccessKilled {
         this.seckillInventory = seckillInventory;
     }
 
-    public SuccessKilled(long seckillId, long userPhone, short state, Date createTime) {
-        this.seckillId = seckillId;
-        this.userPhone = userPhone;
-        this.state = state;
-        this.createTime = createTime;
-    }
-
     public long getSeckillId() {
         return seckillId;
     }

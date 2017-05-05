@@ -1,6 +1,7 @@
 package com.seckill.dao;
 
 import com.seckill.entity.SuccessKilled;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Created by Eakon on 2017/5/5.
@@ -13,12 +14,12 @@ public interface SuccessKilledDao {
      * @param userPhone
      * @return 插入的行数,0代表插入失败
      */
-    public int insertSuccessKilled(long seckillId, long userPhone);
+    public int insertSuccessKilled(@Param("seckillId") long seckillId, @Param("userPhone") long userPhone);
 
     /**
      * 根据id查询SuccessKilled并携带秒杀产品对象实体
      * @param seckillId
      * @return 返回对应的秒杀记录以及该id对应的秒杀商品基本信息
      */
-    public SuccessKilled queryByIdWithSeckill(long seckillId);
+    public SuccessKilled queryByIdWithSeckill(@Param("seckillId") long seckillId,@Param("userPhone") long userPhone);
 }

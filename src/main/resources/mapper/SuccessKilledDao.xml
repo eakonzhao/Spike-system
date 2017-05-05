@@ -1,12 +1,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="main.eakon.com.seckill.dao.SuccessKilledDao">
+<mapper namespace="com.seckill.dao.SuccessKilledDao">
     <!--目的：为DAO接口方法提供sql语句配置-->
     <insert id="insertSuccessKilled">
       <!--主键冲突会报错,加上IGNORE之后不会报错，而是返回数字0-->
-        INSERT IGNORE INTO success_killed(seckill_id, user_phone)
-        VALUES (#{seckillId},#{userPhone});
+        INSERT IGNORE INTO success_killed(seckill_id, user_phone,state)
+        VALUES (#{seckillId},#{userPhone},0);
     </insert>
 
     <select id="queryByIdWithSeckill" resultType="SuccessKilled">
@@ -26,6 +26,6 @@
              s.create_time "seckillInventory.create_time"
         FROM success_killed sk
         INNER JOIN seckillinventory s ON sk.seckill_id = s.seckill_id
-        WHERE sk.seckill_id=#{seckillId};
+        WHERE sk.seckill_id=#{seckillId} AND sk.user_phone=#{userPhone};
     </select>
 </mapper>

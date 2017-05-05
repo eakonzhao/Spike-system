@@ -19,15 +19,6 @@ public class SeckillInventory {
 
     private Date createTime;//创建时间
 
-    public SeckillInventory(long seckillId, String name, int number, Date startTime, Date endTime, Date createTime) {
-        this.seckillId = seckillId;
-        this.name = name;
-        this.number = number;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.createTime = createTime;
-    }
-
     public long getSeckillId() {
         return seckillId;
     }

@@ -1,6 +1,7 @@
 package com.seckill.dao;
 
 import com.seckill.entity.SeckillInventory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface SeckillInventoryDao {
      * @param killTime
      * @return 返回的是数据库中记录更新的行数
      */
-    public int reduceSeckillInventoryMount(long seckillId, Date killTime);
+    public int reduceSeckillInventoryMount(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);
 
     /**
      * 根据商品id查询商品信息
@@ -26,9 +27,10 @@ public interface SeckillInventoryDao {
 
     /**
      * 根据偏移量查询秒杀商品列表
+     * 参数列表中要用@Param("offset")以及@Param("limit")来修饰的原因是
      * @param offet
      * @param limit
      * @return
      */
-    List<SeckillInventory> queryAll(int offet,int limit);
+    List<SeckillInventory> queryAll(@Param("offset") int offet, @Param("limit") int limit);
 }

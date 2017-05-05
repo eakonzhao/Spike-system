@@ -34,6 +34,6 @@ CREATE TABLE success_killed(
   `user_phone` BIGINT NOT NULL COMMENT 'user phone number(用户手机号)',
   `state` TINYINT NOT NULL DEFAULT -1 COMMENT 'status indentification(-1:invalid,0:success,1: payment completed) 状态标识(-1:无效 0：成功 1：已经付款)',
   `create_time` TIMESTAMP NOT NULL COMMENT 'create time(创建时间)',
-  PRIMARY KEY(seckill_id,user_phone),/*union primary key(联合主键)*/
+  PRIMARY KEY(seckill_id,user_phone), /*union primary key(联合主键)*/
   key idx_create_time(create_time)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='spike success detail table(秒杀成功明细表)';

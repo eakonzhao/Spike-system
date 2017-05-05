@@ -1,0 +1,8 @@
+<!--因为用Maven创建项目时Servlet创建JavaWeb项目时Servlet版本可能较低，需要修改Servlet版本为3.1 可以从本地Tomcat目录下的conf中的web.xml文件中把文件头直接拷贝过来-->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+  <display-name>Archetype Created Web Application</display-name>
+</web-app>

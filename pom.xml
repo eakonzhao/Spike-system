@@ -26,11 +26,22 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.7.12</version>
     </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-nop</artifactId>
+          <version>1.7.12</version>
+      </dependency>
     <!--实现slf4j接口并整合-->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>1.1.1</version>
+    </dependency>
+      <!--如果日志无法打印记得加上这个依赖-->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.9</version>
     </dependency>
     <!--2.数据库相关依赖-->
     <!--数据库驱动依赖-->

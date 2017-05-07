@@ -1,6 +1,7 @@
 package com.seckill.util;
 
 /**
+ * 用于封装秒杀结果的状态
  * Created by Eakon on 2017/5/7.
  */
 public enum SeckillStateEnum {

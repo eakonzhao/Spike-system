@@ -34,5 +34,5 @@ public interface SeckillInventoryDao {
      * @param limit
      * @return
      */
-    List<SeckillInventory> queryAll(@Param("offset") int offet, @Param("limit") int limit);
+    public List<SeckillInventory> queryAll(@Param("offset") int offet, @Param("limit") int limit);
 }

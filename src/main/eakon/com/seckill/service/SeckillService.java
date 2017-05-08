@@ -3,6 +3,8 @@ package com.seckill.service;
 import com.seckill.dto.Exposer;
 import com.seckill.dto.SeckillExecution;
 import com.seckill.entity.SeckillInventory;
+import com.seckill.exception.RepeatkillException;
+import com.seckill.exception.SeckillCloseException;
 import com.seckill.exception.SeckillException;
 
 import java.util.List;
@@ -39,5 +41,18 @@ public interface SeckillService {
      * @param userPhone
      * @param md5
      */
-    public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException;
+    public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5)
+            throws SeckillException,SeckillCloseException,RepeatkillException;
+
+    /**
+     * 通过存储过程执行秒杀操作
+     * @param seckillId
+     * @param userPhone
+     * @param md5
+     * @return
+     * @throws SeckillException
+     * @throws SeckillCloseException
+     * @throws RepeatkillException
+     */
+    public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5);
 }

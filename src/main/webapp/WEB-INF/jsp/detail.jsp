@@ -20,12 +20,15 @@
         </div>
         <div class="panel-body">
             <h2 class="text-danger">
+                <!--显示time图标-->
                 <span class="glyphicon glyphicon-time"></span>
+                <!--显示倒计时-->
                 <span class="glyphicon" id="seckill-box"></span>
             </h2>
         </div>
     </div>
 </div>
+<!--登录弹出层，输入电话-->
 <div id="killPhoneModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">

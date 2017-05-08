@@ -8,6 +8,7 @@ import com.seckill.exception.RepeatkillException;
 import com.seckill.exception.SeckillCloseException;
 import com.seckill.service.SeckillService;
 import com.seckill.util.LoggerUtil;
+import com.seckill.util.SeckillStateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +59,7 @@ public class SeckillController {
     @RequestMapping(value = "/{seckillId}/exposer",
             method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
-    public SeckillResult<Exposer> exposer(Long seckillId){
+    public SeckillResult<Exposer> exposer(@PathVariable("seckillId") Long seckillId){
         SeckillResult<Exposer> result;
         try{
             Exposer exposer = seckillService.exportSeckillUrl(seckillId);
@@ -71,24 +72,32 @@ public class SeckillController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{seckillId}/{md5}/execution",
+    @RequestMapping(value = "/{seckillId}/{md5}/execute",
                     method = RequestMethod.POST,
                     produces = {"application/json;charset=UTF-8"})
-    public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId, @PathVariable("md5") String md5, @CookieValue(value = "killPhone",required=false) Long phone){
+    public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
+                                                   @PathVariable("md5") String md5,
+                                                   @CookieValue(value = "killPhone",required=false) Long phone){
         //Spring MVC valid
         if(phone == null){
             return new SeckillResult<SeckillExecution>(false,"未注册");
         }
         SeckillResult<SeckillExecution> result=null;
         try{
+            //存储过程调用
+            //SeckillExecution execution = seckillService.executeSeckillProcedure(seckillId,phone,md5);
             SeckillExecution execution = seckillService.executeSeckill(seckillId,phone,md5);
-            return new SeckillResult<SeckillExecution>(true,execution);
+            result =  new SeckillResult<SeckillExecution>(true,execution);
         }catch(RepeatkillException e){
-
+            SeckillExecution execution = new SeckillExecution(seckillId,SeckillStateEnum.REPEATE_KILL);
+            result = new SeckillResult<SeckillExecution>(true,execution);
         }catch(SeckillCloseException e){
-
+            SeckillExecution execution = new SeckillExecution(seckillId,SeckillStateEnum.END);
+            result = new SeckillResult<SeckillExecution>(true,execution);
         }catch (Exception e){
             log.logger.error(e.getMessage(),e);
+            SeckillExecution execution = new SeckillExecution(seckillId,SeckillStateEnum.INNER_ERROR);
+            result = new SeckillResult<SeckillExecution>(true,execution);
         }
         return result;
     }

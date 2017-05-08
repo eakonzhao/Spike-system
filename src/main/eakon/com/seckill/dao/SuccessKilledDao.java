@@ -4,6 +4,8 @@ import com.seckill.entity.SuccessKilled;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 /**
  * Created by Eakon on 2017/5/5.
  */
@@ -24,4 +26,11 @@ public interface SuccessKilledDao {
      * @return 返回对应的秒杀记录以及该id对应的秒杀商品基本信息
      */
     public SuccessKilled queryByIdWithSeckill(@Param("seckillId") long seckillId,@Param("userPhone") long userPhone);
+
+    /**
+     * 使用存储过程执行秒杀
+     * @param paramMap
+     */
+    public void KillByProcedure(Map<String,Object> paramMap);
 }
+

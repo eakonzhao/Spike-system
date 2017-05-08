@@ -5,7 +5,7 @@ package com.seckill.dto;
  * Created by Eakon on 2017/5/6.
  */
 public class SeckillResult<T> {
-
+    //不是秒杀是否成功的标志，而是请求是否成功的标志
     private boolean success;
 
     private T data;

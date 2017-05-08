@@ -14,7 +14,7 @@ CREATE PROCEDURE  'seckill'.`execute_seckill`
     (seckill_id, user_phone, state, create_time)
       VALUES
         (v_seckill_id,v_phone,v_kill_time);
-      SELECT ROW_COUNT INTO insert_count;
+      SELECT ROW_COUNT() INTO insert_count;
     IF(insert_count = 0) THEN
       ROLLBACK ;
       SET r_result = -1;
@@ -26,8 +26,8 @@ CREATE PROCEDURE  'seckill'.`execute_seckill`
       WHERE seckill_id = seckill_id
         AND end_time > v_kill_time
         AND start_time < v_kill_time
-        AND number>0;
-    SELECT ROW_COUNT INTO insert_count;
+        AND number>1;
+    SELECT ROW_COUNT() INTO insert_count;
       IF(insert_count=0) THEN
         ROLLBACK ;
         SET r_result=0;

@@ -28,4 +28,14 @@
         INNER JOIN seckillinventory s ON sk.seckill_id = s.seckill_id
         WHERE sk.seckill_id=#{seckillId} AND sk.user_phone=#{userPhone};
     </select>
+
+    <!--Mybatis调用存储过程-->
+    <select id="KillByProcedure" statementType="CALLABLE">
+        CALL execute_seckill(
+                #{seckillId,jdbcType=BIGINT,mode=IN},
+                #{phone,jdbcType=BIGINT,mode=IN},
+                #{killTime,jdbcType=TIMESTAMP,mode=IN},
+                #{result,jdbcType=INTEGER,mode=OUT}
+        );
+    </select>
 </mapper>

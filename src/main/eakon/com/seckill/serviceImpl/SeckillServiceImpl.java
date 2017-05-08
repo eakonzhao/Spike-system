@@ -2,6 +2,7 @@ package com.seckill.serviceImpl;
 
 import com.seckill.dao.SeckillInventoryDao;
 import com.seckill.dao.SuccessKilledDao;
+import com.seckill.dao.cache.RedisDao;
 import com.seckill.dto.Exposer;
 import com.seckill.dto.SeckillExecution;
 import com.seckill.entity.SeckillInventory;
@@ -11,15 +12,20 @@ import com.seckill.exception.SeckillCloseException;
 import com.seckill.exception.SeckillException;
 import com.seckill.service.SeckillService;
 import com.seckill.util.Constant;
+import com.seckill.util.SeckillStateEnum;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Eakon on 2017/5/5.
@@ -35,6 +41,8 @@ public class SeckillServiceImpl implements SeckillService {
     @Resource(name = "successKilledDao")
     private SuccessKilledDao successKilledDao;
 
+    @Autowired
+    private RedisDao redisDao;
 
     public List<SeckillInventory> getSeckillList() {
         return seckillInventoryDao.queryAll(0,4);
@@ -44,17 +52,20 @@ public class SeckillServiceImpl implements SeckillService {
         return seckillInventoryDao.queryById(seckillInventoryId);
     }
 
-    /**
-     *使用注解控制事务方法的优点：
-     * 1.开发团队达成一致约定，明确标注事务方法的编程风格；
-     * 2.保证事务方法的执行时间尽可能短，不要穿插其他网络操作，RPC/HTTP请求可以剥离到事务方法外部；
-     * 3.不是所有的方法都需要事务，如果只有一条修改操作或者进行只读操作，那就不需要事务控制
-     */
-    @Transactional
+
     public Exposer exportSeckillUrl(long seckillId) {
-        SeckillInventory seckillInventory = seckillInventoryDao.queryById(seckillId);
+        //优化点：缓存优化：超时的基础上维护一致性
+        //1.访问redis
+        SeckillInventory seckillInventory = redisDao.getSeckillInventory(seckillId);
         if(seckillInventory==null){
-            return new Exposer(false,seckillId);
+            //2.如果redis中不存在，访问数据库
+            seckillInventory = seckillInventoryDao.queryById(seckillId);
+            if(seckillInventory == null){
+                return new Exposer(false,seckillId);
+            }else{
+                //3.将数据放入redis
+                redisDao.putSeckillInventory(seckillInventory);
+            }
         }
         Date startTime = seckillInventory.getStartTime();
         Date endTime = seckillInventory.getEndTime();
@@ -74,7 +85,13 @@ public class SeckillServiceImpl implements SeckillService {
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
     }
-
+    /**
+     *使用注解控制事务方法的优点：
+     * 1.开发团队达成一致约定，明确标注事务方法的编程风格；
+     * 2.保证事务方法的执行时间尽可能短，不要穿插其他网络操作，RPC/HTTP请求可以剥离到事务方法外部；
+     * 3.不是所有的方法都需要事务，如果只有一条修改操作或者进行只读操作，那就不需要事务控制
+     */
+    @Transactional
     public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException {
         if(md5 == null || !md5.equals(getMd5(seckillId))){
             throw new SeckillException("seckill data rewrite");
@@ -82,22 +99,22 @@ public class SeckillServiceImpl implements SeckillService {
         //执行秒杀逻辑：减库存 + 记录购买行为
         Date currentTime = new Date();
         try{
-            //减少库存
-            int updateCount = seckillInventoryDao.reduceSeckillInventoryMount(seckillId,currentTime);
-            if(updateCount <= 0){
-                //秒杀未成功
-                throw new SeckillCloseException("seckill is closed");
-            }else{
-                //记录购买行为
-                int insertCount = successKilledDao.insertSuccessKilled(seckillId,userPhone);
-                //唯一：seckillId,userPhone
-                if(insertCount <=0){
-                    //重复秒杀
-                    throw new RepeatkillException("seckill repeate");
-                }else {
-                    //秒杀成功
-                    SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId,userPhone);
-                    return new SeckillExecution(seckillId,Constant.success,"秒杀成功",successKilled);
+            //记录购买行为
+            int insertCount = successKilledDao.insertSuccessKilled(seckillId,userPhone);
+            //唯一：seckillId,userPhone
+            if(insertCount <=0){
+                //重复秒杀
+                throw new RepeatkillException("seckill repeate");
+            }else {
+                SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId,userPhone);
+                //减少库存
+                int updateCount = seckillInventoryDao.reduceSeckillInventoryMount(seckillId,currentTime);
+                if(updateCount <= 0){
+                    //没有更新到记录，秒杀结束，roolback
+                    throw new SeckillCloseException("seckill is closed");
+                }else{
+                    //秒杀成功 commit
+                    return new SeckillExecution(seckillId, SeckillStateEnum.SUCCESS,successKilled);
                 }
             }
         } catch(SeckillCloseException e){
@@ -112,4 +129,33 @@ public class SeckillServiceImpl implements SeckillService {
             throw new SeckillException("seckill inner error:"+e.getMessage());
         }
     }
+
+    public SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException, SeckillCloseException, RepeatkillException {
+        if(md5 == null || !md5.equals(getMd5(seckillId))){
+            return new SeckillExecution(seckillId,SeckillStateEnum.DATA_REWRITE);
+        }
+        Date killTime = new Date();
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("seckillId",seckillId);
+        map.put("phone",userPhone);
+        map.put("killTime",killTime);
+        map.put("result",null);
+        //执行存储过程，result被复制
+        try{
+            successKilledDao.KillByProcedure(map);
+            //获取result
+            int result = MapUtils.getInteger(map,"result",-2);
+            if(result==1){
+                SuccessKilled sk = successKilledDao.queryByIdWithSeckill(seckillId,userPhone);
+                return new SeckillExecution(seckillId,SeckillStateEnum.SUCCESS,sk);
+            }else {
+                return new SeckillExecution(seckillId,SeckillStateEnum.stateOf(result));
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            return new SeckillExecution(seckillId,SeckillStateEnum.INNER_ERROR);
+        }
+    }
+
+
 }

@@ -22,17 +22,17 @@ CREATE TABLE seckillInventory(
 INSERT INTO
   seckillInventory(name,number,start_time,end_time)
 VALUES
-  ('2000元秒杀iPhone 7 plus','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
-  ('600元秒杀ipad4','250','2017-05-04 00:00:00','2017-05-07 00:00:00'),
-  ('500元秒杀HuaWei P10','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
-  ('100元秒杀XiaoMi 6','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
-  ('200元秒杀OPPO R9s','100','2017-05-04 00:00:00','2017-05-07 00:00:00');
+  ('真皮钱包统统20块统统20块','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
+  ('OPPO R9s今天大清仓今天大清仓','250','2017-05-04 00:00:00','2017-05-07 00:00:00'),
+  ('华为P10全部免费送全部免费送','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
+  ('苹果手机一律不要钱一律不要钱','100','2017-05-04 00:00:00','2017-05-07 00:00:00'),
+  ('锤子手机想拿就拿想拿就拿','100','2017-05-04 00:00:00','2017-05-07 00:00:00');
 
 #Creating a table which used to record the detail message when user has spiked successfully(秒杀成功明细表)
 CREATE TABLE success_killed(
   `seckill_id` BIGINT NOT NULL COMMENT 'spike commodity id(秒杀商品id)',
   `user_phone` BIGINT NOT NULL COMMENT 'user phone number(用户手机号)',
-  `state` TINYINT NOT NULL DEFAULT -1 COMMENT 'status indentification(-1:invalid,0:success,1: payment completed) 状态标识(-1:无效 0：成功 1：已经付款)',
+  `state` TINYINT NOT NULL DEFAULT 0 COMMENT 'status indentification(-1:invalid,0:success,1: payment completed) 状态标识(-1:无效 0：成功 1：已经付款)',
   `create_time` TIMESTAMP NOT NULL COMMENT 'create time(创建时间)',
   PRIMARY KEY(seckill_id,user_phone), /*union primary key(联合主键)*/
   key idx_create_time(create_time)

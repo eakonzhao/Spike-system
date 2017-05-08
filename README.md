@@ -10,7 +10,7 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 项目github地址:https://github.com/eakonzhao/Spike-system ( 喜欢的话记得给个star哦 o(^▽^)o )
 
-####怎么把项目运行起来？
+#### 怎么把项目运行起来？
 1. git clone https://github.com/eakonzhao/Spike-system
 2. 打开 IDEA --> File --> New --> Open
 3. 打开pom.xml，然后让Maven将所需依赖都加载进来
@@ -20,7 +20,7 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 
 
-####秒杀系统架构设计
+#### 秒杀系统架构设计
 
 一、秒杀活动技术挑战
 
@@ -94,10 +94,8 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 ![重复秒杀](http://upload-images.jianshu.io/upload_images/2993097-85773e865d3c4bfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-####实现
-#####项目总体描述
-本项目是基于
-#####项目中应用到的技术与工具
+
+##### 项目中应用到的技术与工具
 - IDEA
 - MySQL
 - Spring MVC
@@ -109,11 +107,11 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
   ........
   其实还用到了一些技术，这里就不一一给出了。由于本项目采用Maven进行管理，所以在pom.xml文件里面都给出了所需的依赖。
 
-#####项目骨架展示
+##### 项目骨架展示
 
 ![项目骨架展示](http://upload-images.jianshu.io/upload_images/2993097-dea1c644ae066e3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#####遇到的一些坑
+##### 遇到的一些坑
 1. Spring MVC配置出错
    ![通配符很全面，但无法找到元素...](http://upload-images.jianshu.io/upload_images/2993097-6782836544fb48d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
    ![ApplicationContext.xml的头要配置正确](http://upload-images.jianshu.io/upload_images/2993097-d29792ecf56f99d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

@@ -1,4 +1,5 @@
 # Spike-system
+
 #### 一个基于Spring MVC、Spring、Mybatis框架的简单商品秒杀系统
 
 A simple spike system  based on Spring MVC, Spring, Mybatis framework.
@@ -113,13 +114,14 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 #####遇到的一些坑
 1. Spring MVC配置出错
-   ![通配符很全面，但无法找到元素...]MI@L98.png](http://upload-images.jianshu.io/upload_images/2993097-6782836544fb48d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+   ![通配符很全面，但无法找到元素...](http://upload-images.jianshu.io/upload_images/2993097-6782836544fb48d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
    ![ApplicationContext.xml的头要配置正确](http://upload-images.jianshu.io/upload_images/2993097-d29792ecf56f99d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 2. Spring MVC参数绑定错误
    调试的时候打开浏览器控制台看到报了个400错误，后来检查之后发现原来是Spring MVC的参数绑定出错了，使用@pathVariable的时候要注意
-   ![控制台出现400错误](http://upload-images.jianshu.io/upload_images/2993097-277e293a1f9e611e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-   ![400 Bad Request]D@`NG8JS2.png](http://upload-images.jianshu.io/upload_images/2993097-45924ca6923b9b64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-   ![正确的@PathVariable语法 @PathVariable("parameter")](http://upload-images.jianshu.io/upload_images/2993097-fa425ff151157851.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![控制台出现400错误](http://upload-images.jianshu.io/upload_images/2993097-277e293a1f9e611e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![400 Bad Request](http://upload-images.jianshu.io/upload_images/2993097-45924ca6923b9b64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![正确的@PathVariable语法 @PathVariable("parameter")](http://upload-images.jianshu.io/upload_images/2993097-fa425ff151157851.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 3. logback和slf4j整合出错导致无法正常打印日志信息
    ![logback报错信息](http://upload-images.jianshu.io/upload_images/2993097-9a9bff791e3127fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
    在查看了官方手册之后发现原来logback和slf4j在整合的过程中应该注意版本的问题

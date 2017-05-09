@@ -9,7 +9,8 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 本文主要是对秒杀系统架构设计、系统功能等进行介绍，另外提一下编码过程中遇到的一些坑，具体的编码不过多赘述，代码中都写了详细的注释。建议直接把项目down下来自己边运行边探究。
 
 项目github地址:https://github.com/eakonzhao/Spike-system ( 喜欢的话记得给个star哦 o(^▽^)o )
-####怎么把项目运行起来？
+
+#### 怎么把项目运行起来？
 1. git clone https://github.com/eakonzhao/Spike-system
 2. 打开 IDEA --> File --> New --> Open
 3. 打开pom.xml，然后让Maven将所需依赖都加载进来
@@ -79,7 +80,7 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 ![两张主要的数据表(Github已经放了建表的sql语句)](http://upload-images.jianshu.io/upload_images/2993097-9bd8c4a0e7335506.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 系统功能介绍
+####系统功能介绍
 由于上面已经给出了系统的详细流程图，所以在这里就只展示几张系统的截图
 
 ![秒杀商品列表页](http://upload-images.jianshu.io/upload_images/2993097-19331f1ea3d54d79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -93,10 +94,8 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
 
 ![重复秒杀](http://upload-images.jianshu.io/upload_images/2993097-85773e865d3c4bfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 实现
-#####项目总体描述
-本项目是基于
-#####项目中应用到的技术与工具
+
+##### 项目中应用到的技术与工具
 - IDEA
 - MySQL
 - Spring MVC
@@ -108,11 +107,11 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
   ........
   其实还用到了一些技术，这里就不一一给出了。由于本项目采用Maven进行管理，所以在pom.xml文件里面都给出了所需的依赖。
 
-#####项目骨架展示
+##### 项目骨架展示
 
 ![项目骨架展示](http://upload-images.jianshu.io/upload_images/2993097-dea1c644ae066e3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#####遇到的一些坑
+##### 遇到的一些坑
 1. Spring MVC配置出错
    ![通配符很全面，但无法找到元素...](http://upload-images.jianshu.io/upload_images/2993097-6782836544fb48d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
    ![ApplicationContext.xml的头要配置正确](http://upload-images.jianshu.io/upload_images/2993097-d29792ecf56f99d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -126,6 +125,5 @@ A simple spike system  based on Spring MVC, Spring, Mybatis framework.
    ![logback报错信息](http://upload-images.jianshu.io/upload_images/2993097-9a9bff791e3127fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
    在查看了官方手册之后发现原来logback和slf4j在整合的过程中应该注意版本的问题
    ![Logback-classic version 1.1.4 and later require slf4j-api version 1.7.15 or later.](http://upload-images.jianshu.io/upload_images/2993097-ff0ce1659bf47723.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 
 ![在pom.xml引入slf4j和logback的依赖时应该注意版本问题](http://upload-images.jianshu.io/upload_images/2993097-a708eb0b6576e304.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

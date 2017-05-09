@@ -4,9 +4,9 @@ DELIMITER $$ # console ; 转换为 $$
 #参数：in输入参数 out输出参数
 #row_count():返回上一条修改类型sql(delete,insert,update)的影响行数
 #row_count(): 0:未修改数据 >0:表示修改的行数 <0:sql错误/未执行修改sql
-CREATE PROCEDURE  'seckill'.`execute_seckill`
+CREATE PROCEDURE  `seckill`.`execute_seckill`
   ( IN v_seckill_id BIGINT, IN v_phone BIGINT,IN v_kill_time TIMESTAMP,
-    OUT r_result INT)
+    OUT r_result INTEGER)
   BEGIN
     DECLARE insert_count INT DEFAULT 0;
     START TRANSACTION;
